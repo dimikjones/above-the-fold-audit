@@ -4,7 +4,7 @@
  *
  * Uninstalling plugin code.
  *
- * @package     Plugin_Name/Uninstaller
+ * @package     Above_The_Fold_Audit/Uninstaller
  * @version     1.0.0
  */
 

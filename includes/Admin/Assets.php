@@ -4,13 +4,13 @@
  *
  * @class       AdminAssets
  * @version     1.0.0
- * @package     Plugin_Name/Classes/
+ * @package     Above_The_Fold_Audit/Classes/
  */
 
-namespace Plugin_Name\Admin;
+namespace Above_The_Fold_Audit\Admin;
 
-use Plugin_Name\Assets as AssetsMain;
-use Plugin_Name\Utils;
+use Above_The_Fold_Audit\Assets as AssetsMain;
+use Above_The_Fold_Audit\Utils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

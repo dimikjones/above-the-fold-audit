@@ -16,7 +16,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Plugin_Name\\": "includes/"
+			"Above_The_Fold_Audit\\": "includes/"
 		}
 	},
 	"config": {

@@ -9,7 +9,7 @@
  *
  * @link              http://example.com
  * @since             1.0.0
- * @package           Plugin_Name
+ * @package           Above_The_Fold_Audit
  *
  * @wordpress-plugin
  * Plugin Name: Above The Fold Audit
@@ -31,7 +31,7 @@
  * - `phpcs.xml`
  */
 
-namespace Plugin_Name;
+namespace Above_The_Fold_Audit;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

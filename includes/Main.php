@@ -2,14 +2,14 @@
 /**
  * Main class.
  *
- * @package  Plugin_Name
+ * @package  Above_The_Fold_Audit
  * @version  1.0.0
  */
 
-namespace Plugin_Name;
+namespace Above_The_Fold_Audit;
 
-use Plugin_Name\Admin\Main as Admin;
-use Plugin_Name\Front\Main as Front;
+use Above_The_Fold_Audit\Admin\Main as Admin;
+use Above_The_Fold_Audit\Front\Main as Front;
 
 
 /**

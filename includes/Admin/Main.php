@@ -4,10 +4,10 @@
  *
  * @class       Admin
  * @version     1.0.0
- * @package     Plugin_Name/Classes/
+ * @package     Above_The_Fold_Audit/Classes/
  */
 
-namespace Plugin_Name\Admin;
+namespace Above_The_Fold_Audit\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
