@@ -81,11 +81,6 @@ final class Main {
 			Front::hooks();
 		}
 
-		// Common includes.
-		Block::hooks();
-
-		Customizations\ACF::hooks();
-
 		// Set up localisation.
 		self::load_plugin_textdomain();
 
