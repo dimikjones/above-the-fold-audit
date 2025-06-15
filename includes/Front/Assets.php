@@ -57,12 +57,15 @@ final class Assets {
 	 */
 	public static function add_scripts( $scripts ) {
 
-		$scripts['above-the-fold-audit-general'] = array(
-			'src'  => AssetsMain::localize_asset( 'front.js' ),
-			'data' => array(
-				'ajax_url' => Utils::ajax_url(),
-			),
-		);
+		// Enqueue only on default homepage since current functionality doesn't require usage elsewhere.
+		if ( is_front_page() && is_home() ) {
+			$scripts['above-the-fold-audit-general'] = array(
+				'src'  => AssetsMain::localize_asset( 'front.js' ),
+				'data' => array(
+					'ajax_url' => Utils::ajax_url(),
+				),
+			);
+		}
 
 		return $scripts;
 	}
