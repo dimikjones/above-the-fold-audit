@@ -38,7 +38,7 @@ final class Main {
 		add_action( 'init', array( __CLASS__, 'init' ) );
 
 		// Perform other actions when plugin is loaded.
-		do_action( 'plugin_name_loaded' );
+		do_action( 'above_the_fold_audit_loaded' );
 	}
 
 
@@ -85,7 +85,7 @@ final class Main {
 		self::load_plugin_textdomain();
 
 		// Init action.
-		do_action( 'plugin_name_loaded' );
+		do_action( 'above_the_fold_audit_loaded' );
 	}
 
 
@@ -97,12 +97,12 @@ final class Main {
 	public static function init() {
 
 		// Before init action.
-		do_action( 'before_plugin_name_init' );
+		do_action( 'before_above_the_fold_audit_init' );
 
 		// Add needed hooks here.
 
 		// After init action.
-		do_action( 'plugin_name_init' );
+		do_action( 'above_the_fold_audit_init' );
 	}
 
 

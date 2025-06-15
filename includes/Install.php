@@ -26,6 +26,6 @@ final class Install {
 		// Perform install actions here.
 
 		// Trigger action.
-		do_action( 'plugin_name_installed', $sitewide );
+		do_action( 'above_the_fold_audit_installed', $sitewide );
 	}
 }

@@ -66,7 +66,7 @@ final class Utils {
 	 */
 	public static function template_path() {
 		// Allow 3rd party plugin filter template path from their plugin.
-		return apply_filters( 'plugin_name_template_path', 'above-the-fold-audit/' );
+		return apply_filters( 'above_the_fold_audit_template_path', 'above-the-fold-audit/' );
 	}
 
 
