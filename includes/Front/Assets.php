@@ -42,7 +42,7 @@ final class Assets {
 	public static function add_styles( $styles ) {
 
 		$styles['above-the-fold-audit-general'] = array(
-			'src' => AssetsMain::localize_asset( 'css/front/above-the-fold-audit.css' ),
+			'src' => AssetsMain::localize_asset( 'front.css' ),
 		);
 
 		return $styles;
@@ -58,7 +58,7 @@ final class Assets {
 	public static function add_scripts( $scripts ) {
 
 		$scripts['above-the-fold-audit-general'] = array(
-			'src'  => AssetsMain::localize_asset( 'js/front/above-the-fold-audit.js' ),
+			'src'  => AssetsMain::localize_asset( 'front.js' ),
 			'data' => array(
 				'ajax_url' => Utils::ajax_url(),
 			),
