@@ -39,6 +39,8 @@ final class Main {
 
 		// Perform other actions when plugin is loaded.
 		do_action( 'above_the_fold_audit_loaded' );
+
+		//register_deactivation_hook( PLUGIN_FILE, array( Uninstall::class, 'uninstall' ) );
 	}
 
 
@@ -80,6 +82,9 @@ final class Main {
 		if ( Utils::is_request( 'frontend' ) ) {
 			Front::hooks();
 		}
+
+		// Database table class.
+		Table::hooks();
 
 		// Set up localisation.
 		self::load_plugin_textdomain();
