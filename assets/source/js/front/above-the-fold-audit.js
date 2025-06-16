@@ -64,20 +64,25 @@
 			const viewport 		 = homePageAnalysis.getViewportSize();
 			const aboveFoldLinks = homePageAnalysis.getVisibleAboveFoldHyperlinks();
 
-			console.log( '+++ Homepage Analysis for Current User +++' );
-			console.log( 'Visitor Screen (Viewport) Size:', `${viewport.width}px x ${viewport.height}px` );
-			console.log( 'Hyperlinks Visible Above the Fold:' );
-
 			if ( aboveFoldLinks.length > 0 ) {
-				aboveFoldLinks.forEach(
-					( link, index ) => {
-                    console.log( `  ${index + 1}. Text: "${link.text}", Href: "${link.href}", Position:`, link.position );
-					}
-				);
+
+				const dataToSend = {
+					timestamp: new Date().toISOString(),
+					pageUrl: window.location.href,
+					viewportSize: viewport,
+					visibleLinks: aboveFoldLinks
+				};
+
+				console.log( '+++ Homepage Analysis for Current User +++' );
+				// Log the full data object.
+				console.log( 'Data to be sent:', dataToSend );
+				console.log( '======================================' );
+
+				// Send the collected data to the WordPress endpoint.
+				//homePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
 			} else {
-				console.log( '  No hyperlinks found visible above the fold.' );
+				console.log( 'No hyperlinks found visible above the fold.' );
 			}
-			console.log( '======================================' );
 		},
 		isVisible: function ( el ) {
 			/**
@@ -161,6 +166,51 @@
 			);
 
 			return visibleLinks;
+		},
+		sendDataToWordPressEndpoint: async function ( data ) {
+			/**
+			 * Sends the collected data to a WordPress plugin endpoint.
+			 * You will need to set up a corresponding endpoint in your WordPress plugin
+			 * to receive and process this data.
+			 *
+			 * @param {object} data - The data object to send (viewport size and visible links).
+			 */
+			// IMPORTANT: Replace this URL with your actual WordPress plugin endpoint URL.
+			// This URL MUST be correct and your WordPress backend MUST be configured to
+			// accept POST requests at this endpoint, including handling CORS if necessary.
+			// Example using WordPress REST API: 'https://yourwebsite.com/wp-json/your-plugin/v1/analytics'
+			// Example using admin-ajax.php: 'https://yourwebsite.com/wp-admin/admin-ajax.php'.
+			const endpointUrl = 'https://yourwebsite.com/wp-json/your-plugin/v1/analytics'; // <<< MAKE SURE TO REPLACE THIS URL!
+
+			try {
+				const response = await fetch(
+					endpointUrl,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							// If your WordPress endpoint requires a nonce for security (highly recommended for REST API),
+							// you would enqueue a script in WordPress to expose the nonce globally, e.g.:
+							// 'X-WP-Nonce': WordPressNonceVariable.
+						},
+						body: JSON.stringify( data )
+					}
+				);
+
+				if ( response.ok ) {
+					const result = await response.json();
+					console.log( 'Data successfully sent to WordPress endpoint:', result );
+				} else {
+					// Log more details if the response is not OK.
+					const errorResponseText = await response.text();
+					console.error( `Failed to send data to WordPress endpoint. Status: ${response.status} ${response.statusText}. Response body:`, errorResponseText );
+					console.error( 'Possible reasons: Incorrect URL, server-side error, or CORS policy blocking the request.' );
+				}
+			} catch (error) {
+				console.error( 'Error sending data to WordPress endpoint: Failed to fetch.', error );
+				console.error( 'This typically means the browser could not initiate or complete the network request.' );
+				console.error( 'Check: 1. Network connectivity. 2. Correctness of the endpoint URL. 3. CORS configuration on your WordPress server.' );
+			}
 		}
 	};
 
