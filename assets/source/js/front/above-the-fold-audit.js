@@ -35,15 +35,15 @@
 		'DOMContentLoaded',
 		() => {
 			// Run the analysis when the page loads.
-			homePageAnalysis.init();
+			aboveFoldAuditHomePageAnalysis.init();
 		}
 	);
 
 	window.addEventListener(
 		'resize',
 		() => {
-			// Optionally Re-run the analysis if the window is resized or init function manually from the console after resize -> aboveFoldAudit.homePageAnalysis.init()
-			// homePageAnalysis.init();
+			// Optionally Re-run the analysis if the window is resized or init function manually from the console after resize -> aboveFoldAudit.aboveFoldAuditHomePageAnalysis.init()
+			// aboveFoldAuditHomePageAnalysis.init();
 		}
 	);
 
@@ -55,14 +55,14 @@
 	 * The results are logged to the browser's console.
 	 * This script is designed to run automatically on page load for every visitor.
 	 */
-	var homePageAnalysis = {
+	var aboveFoldAuditHomePageAnalysis = {
 		init: function () {
 			/**
 			 * Init function to run the detection and log results.
 			 * This function have to be called when the DOM is ready.
 			 */
-			const viewport 		 = homePageAnalysis.getViewportSize();
-			const aboveFoldLinks = homePageAnalysis.getVisibleAboveFoldHyperlinks();
+			const viewport 		 = aboveFoldAuditHomePageAnalysis.getViewportSize();
+			const aboveFoldLinks = aboveFoldAuditHomePageAnalysis.getVisibleAboveFoldHyperlinks();
 
 			if ( aboveFoldLinks.length > 0 ) {
 
@@ -79,7 +79,7 @@
 				console.log( '======================================' );
 
 				// Send the collected data to the WordPress endpoint.
-				//homePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
+				//aboveFoldAuditHomePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
 			} else {
 				console.log( 'No hyperlinks found visible above the fold.' );
 			}
@@ -122,14 +122,14 @@
 			 *
 			 * @returns {Array<object>} An array of objects, each representing a visible hyperlink.
 			 */
-			const { width: viewportWidth, height: viewportHeight } = homePageAnalysis.getViewportSize();
+			const { width: viewportWidth, height: viewportHeight } = aboveFoldAuditHomePageAnalysis.getViewportSize();
 			const allLinks 	   = document.querySelectorAll( 'a' );
 			const visibleLinks = [];
 
 			allLinks.forEach(
 				link => {
 					// First, check if the element is visually rendered (not display:none, visibility:hidden, opacity:0).
-					if ( ! homePageAnalysis.isVisible( link ) ) {
+					if ( ! aboveFoldAuditHomePageAnalysis.isVisible( link ) ) {
 						// Skip if not visually visible.
 						return;
 					}
@@ -214,6 +214,6 @@
 		}
 	};
 
-	aboveFoldAudit.homePageAnalysis = homePageAnalysis;
+	aboveFoldAudit.aboveFoldAuditHomePageAnalysis = aboveFoldAuditHomePageAnalysis;
 
 })( jQuery );
