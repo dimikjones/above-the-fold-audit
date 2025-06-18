@@ -24,7 +24,7 @@ $per_page = 20;
 $current_page = isset( $_GET['paged'] ) ? max( 1, intval( $_GET['paged'] ) ) : 1;
 $offset       = ( $current_page - 1 ) * $per_page;
 
-$total_entries = count( Table::get_data( false, false ) );
+$total_entries = Table::get_total_entries();
 
 $data = Table::get_data( $current_page, $offset );
 ?>

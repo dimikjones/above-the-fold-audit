@@ -105,9 +105,6 @@ final class Table {
 
 	/**
 	 * Fetch data from the database optionally with LIMIT and OFFSET for pagination.
-	 * This method can be called if you need to perform specific schema migrations
-	 * beyond what dbDelta automatically handles, or just to ensure dbDelta runs
-	 * if the version number is different.
 	 *
 	 * @param int $per_page
 	 * @param int $offset
@@ -125,6 +122,20 @@ final class Table {
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Get total entries from the database table by counting ID only - faster than fetching everything.
+	 *
+	 * @return int
+	 */
+	public static function get_total_entries() {
+		global $wpdb;
+		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
+
+		$total_entries = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(id) FROM %i', $table_name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+		return intval( $total_entries );
 	}
 
 	/**
