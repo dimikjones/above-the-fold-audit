@@ -43,7 +43,7 @@ class AboveTheFoldPage extends AdminPageMain {
 	}
 
 	/**
-	 * Render the options page.
+	 * Render the admin page.
 	 */
 	public function above_the_fold_page_html() {
 		// Check user capabilities.

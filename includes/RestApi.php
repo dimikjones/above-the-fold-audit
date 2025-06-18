@@ -9,8 +9,6 @@
 
 namespace Above_The_Fold_Audit;
 
-use Above_The_Fold_Audit\Assets as AssetsRestApi;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
