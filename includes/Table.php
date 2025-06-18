@@ -44,6 +44,10 @@ final class Table {
 	 */
 	public static function hooks() {
 		add_action( 'above_the_fold_audit_loaded', array( __CLASS__, 'install' ) );
+
+		// Schedule daily cleanup of old data (if not already scheduled).
+		add_action( 'wp', array( __CLASS__, 'schedule_daily_cleanup' ) );
+		add_action( 'above_the_fold_audit_daily_cleanup', array( __CLASS__, 'clear_old_data' ) );
 	}
 
 	/**
@@ -153,5 +157,43 @@ final class Table {
 
 		// Also delete the database version option.
 		delete_option( self::DB_VERSION_OPTION_KEY );
+	}
+
+	/**
+	 * Schedules a daily cleanup event for old analytics data.
+	 * This cron event runs once daily.
+	 *
+	 * @return void
+	 */
+	public static function schedule_daily_cleanup() {
+		if ( ! wp_next_scheduled( 'above_the_fold_audit_daily_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'above_the_fold_audit_daily_cleanup' );
+		}
+	}
+
+	/**
+	 * Clears analytics data older than 7 days from the custom database table.
+	 * This method is triggered by the scheduled cron event.
+	 *
+	 * @return void
+	 */
+	public static function clear_old_data() {
+		global $wpdb;
+		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
+		$seven_days_ago = date( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
+
+		$deleted = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM %i WHERE timestamp < %s",
+				$table_name,
+				$seven_days_ago
+			)
+		);
+
+		if ( false === $deleted ) {
+			error_log( 'Above The Fold Audit: Failed to clear old data. Error: ' . $wpdb->last_error );
+		} else {
+			error_log( 'Above The Fold Audit: Successfully cleared ' . $deleted . ' old data entries.' );
+		}
 	}
 }
