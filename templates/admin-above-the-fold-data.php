@@ -26,7 +26,7 @@ $offset       = ( $current_page - 1 ) * $per_page;
 
 $total_entries = Table::get_total_entries();
 
-$data = Table::get_data( $current_page, $offset );
+$data = Table::get_data( $per_page, $offset );
 ?>
 
 <?php if ( empty( $data ) && 1 === $current_page ) : ?>
