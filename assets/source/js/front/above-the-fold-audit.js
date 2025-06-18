@@ -73,11 +73,6 @@
 					visibleLinks: aboveFoldLinks
 				};
 
-				console.log( '+++ Homepage Analysis for Current User +++' );
-				// Log the full data object.
-				console.log( 'Data to be sent:', dataToSend );
-				console.log( '======================================' );
-
 				// Send the collected data to the WordPress endpoint.
 				aboveFoldAuditHomePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
 			} else {
@@ -175,9 +170,6 @@
 			 *
 			 * @param {object} data - The data object to send (viewport size and visible links).
 			 */
-			// IMPORTANT: Replace this URL with your actual WordPress plugin endpoint URL.
-			// This URL MUST be correct and your WordPress backend MUST be configured to
-			// accept POST requests at this endpoint, including handling CORS if necessary.
 			// Example using WordPress REST API: 'https://yourwebsite.com/wp-json/your-plugin/v1/analytics'
 			// Example using admin-ajax.php: 'https://yourwebsite.com/wp-admin/admin-ajax.php'.
 			const endpointUrl = 'http://wpmywork.local/wp-json/above-the-fold/v1/audit';
@@ -194,9 +186,6 @@
 						body: JSON.stringify( data )
 					}
 				);
-
-				console.log('testing');
-				console.log(response);
 
 				if ( response.ok ) {
 					const result = await response.json();
