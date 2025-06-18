@@ -9,6 +9,8 @@
 
 namespace Above_The_Fold_Audit;
 
+use Above_The_Fold_Audit\Assets as AssetsRestApi;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -21,6 +23,25 @@ final class RestApi {
 	public static function hooks() {
 		// Hook into REST API initialization to register our endpoint.
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_endpoint' ) );
+
+		// Localize nonce to frontend.
+		add_filter( 'above_the_fold_audit_general_params', array( __CLASS__, 'enqueue_frontend_script' ) );
+	}
+
+	/**
+	 * Enqueues the frontend script and localizes the WordPress REST API nonce.
+	 * This makes `wpApiSettings.nonce` available in your JavaScript.
+	 *
+	 * @return array
+	 */
+	public static function enqueue_frontend_script( $data ) {
+		// Localize script data with nonce for REST API requests.
+		// The `wp_localize_script` function should be called after `wp_enqueue_script`.
+		$new_data = array(
+			'rest_nonce' => wp_create_nonce( 'wp_rest' ) // Create the nonce for general REST API access.
+		);
+
+		return array_merge( $data, $new_data );
 	}
 
 	/**
@@ -90,8 +111,20 @@ final class RestApi {
 	 * @return bool|WP_Error True if permission is granted, WP_Error otherwise.
 	 */
 	public static function permission_check( \WP_REST_Request $request ) {
-		// Allow public access for simple analytics collection.
-		// For production, consider adding nonce verification or other authentication.
+		// Get the nonce from the request header.
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+
+		// Verify the nonce. 'wp_rest' is the default action for REST API nonces.
+		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			// If nonce is invalid, return a WP_Error object.
+			return new \WP_Error(
+				'rest_forbidden_nonce',
+				__( 'Invalid or missing nonce.', 'above-the-fold-audit' ),
+				array( 'status' => 401 )
+			);
+		}
+
+		// If nonce is valid, grant permission.
 		return true;
 	}
 

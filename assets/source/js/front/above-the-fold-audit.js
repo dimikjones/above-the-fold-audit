@@ -189,9 +189,7 @@
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
-							// If your WordPress endpoint requires a nonce for security (highly recommended for REST API),
-							// you would enqueue a script in WordPress to expose the nonce globally, e.g.:
-							// 'X-WP-Nonce': WordPressNonceVariable.
+							'X-WP-Nonce': above_the_fold_audit_general_params.rest_nonce, // Include the nonce in the header.
 						},
 						body: JSON.stringify( data )
 					}
