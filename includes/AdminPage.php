@@ -45,12 +45,41 @@ abstract class AdminPage {
 	/**
 	 * Configure options for the admin page using the settings API.
 	 */
-	abstract public function configure_options();
+	protected function configure_options() {
+		// Register a new setting for plugin options page.
+		register_setting( $this->get_menu_slug(), $this->get_menu_slug() );
+
+		// Add settings for the plugin.
+	}
 
 	/**
 	 * Renders the admin page.
 	 */
-	abstract public function options_page_html();
+	protected function options_page_html() {
+		// Check user capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// WPCS: input var ok.
+		if ( isset( $_REQUEST['settings-updated'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			// Add settings saved message with the class of "updated".
+			add_settings_error( 'messages', 'message', esc_html__( 'Settings Saved', 'core-speed-optimizer' ), 'updated' );
+		}
+
+		// Show error/update messages.
+		settings_errors( 'messages' );
+		?>
+		<div class="wrap" id="above-the-fold-audit-options">
+			<h1><?php echo esc_html( $this->get_page_title() ); ?></h1>
+			<form action="options.php" method="POST">
+				<?php settings_fields( $this->get_menu_slug() ); ?>
+				<?php do_settings_sections( $this->get_menu_slug() ); ?>
+				<?php submit_button(); ?>
+			</form>
+		</div>
+		<?php
+	}
 
 	/**
 	 * Render a form field.

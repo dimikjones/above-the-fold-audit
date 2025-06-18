@@ -9,6 +9,8 @@
 
 namespace Above_The_Fold_Audit\Admin;
 
+use Core_Speed_Optimizer\Admin\PluginOptions;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -26,6 +28,8 @@ final class Main {
 	public static function hooks() {
 
 		Assets::hooks();
+
+		AboveTheFoldPage::hooks();
 
 		add_action( 'current_screen', array( __CLASS__, 'conditional_includes' ) );
 	}
