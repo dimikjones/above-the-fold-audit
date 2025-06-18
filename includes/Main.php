@@ -25,7 +25,6 @@ final class Main {
 		'wp_version'  => '6.0',
 	);
 
-
 	/**
 	 * Constructor
 	 */
