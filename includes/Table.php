@@ -103,11 +103,26 @@ final class Table {
 		}
 	}
 
-	public static function get_data() {
+	/**
+	 * Fetch data from the database optionally with LIMIT and OFFSET for pagination.
+	 * This method can be called if you need to perform specific schema migrations
+	 * beyond what dbDelta automatically handles, or just to ensure dbDelta runs
+	 * if the version number is different.
+	 *
+	 * @param int $per_page
+	 * @param int $offset
+	 *
+	 * @return array
+	 */
+	public static function get_data( $per_page, $offset ) {
 		global $wpdb;
 		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
 
-		$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY timestamp DESC LIMIT 50', $table_name ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		if ( $per_page && $offset ) {
+			$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY timestamp DESC LIMIT %d OFFSET %d', $table_name, $per_page, $offset ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		} else {
+			$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY timestamp DESC', $table_name ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
 
 		return $results;
 	}

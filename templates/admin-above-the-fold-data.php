@@ -7,11 +7,15 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Marko_WooCommerce_Api_Fetch
- * @subpackage Marko_WooCommerce_Api_Fetch/templates
- *
- * @var array $args
+ * @package    Above_The_Fold_Audit
+ * @subpackage Above_The_Fold_Audit/templates
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use Above_The_Fold_Audit\Table;
 
 // Number of items to display per page.
 $per_page = 20;
@@ -20,10 +24,12 @@ $per_page = 20;
 $current_page = isset( $_GET['paged'] ) ? max( 1, intval( $_GET['paged'] ) ) : 1;
 $offset       = ( $current_page - 1 ) * $per_page;
 
-$total_entries = count( $args );
+$total_entries = count( Table::get_data( false, false ) );
+
+$data = Table::get_data( $current_page, $offset );
 ?>
 
-<?php if ( empty( $args ) && 1 === $current_page ) : ?>
+<?php if ( empty( $data ) && 1 === $current_page ) : ?>
 	<p><?php esc_html_e( 'No audit data found yet.', 'above-the-fold-audit' ); ?></p>
 <?php else : ?>
 	<table class="above-the-fold-audit-table widefat striped">
@@ -38,7 +44,7 @@ $total_entries = count( $args );
 		</tr>
 		</thead>
 		<tbody>
-		<?php foreach ( $args as $row ) : ?>
+		<?php foreach ( $data as $row ) : ?>
 			<tr>
 				<td><?php echo esc_html( $row['timestamp'] ); ?></td>
 				<td class="url-cell"><a href="<?php echo esc_url( $row['page_url'] ); ?>" target="_blank"><?php echo esc_html( $row['page_url'] ); ?></a></td>
@@ -73,7 +79,7 @@ $total_entries = count( $args );
 		<?php endforeach; ?>
 		<?php if ( empty( $results ) && $current_page > 1 ) : ?>
 			<tr>
-				<td colspan="6"><?php esc_html_e( 'No entries found on this page.', 'above-the-fold-audit' ); ?></td>
+				<td colspan="6"><?php esc_html_e( 'No more entries.', 'above-the-fold-audit' ); ?></td>
 			</tr>
 		<?php endif; ?>
 		</tbody>
