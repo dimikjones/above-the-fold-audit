@@ -39,8 +39,6 @@ final class Main {
 
 		// Perform other actions when plugin is loaded.
 		do_action( 'above_the_fold_audit_loaded' );
-
-		//register_deactivation_hook( PLUGIN_FILE, array( Uninstall::class, 'uninstall' ) );
 	}
 
 

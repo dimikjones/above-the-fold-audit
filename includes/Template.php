@@ -57,16 +57,17 @@ final class Template {
 	/**
 	 * Get other templates passing attributes and including the file.
 	 *
-	 * @param string              $template_name Filename to locate.
+	 * @param string $template_name Filename to locate.
 	 * @param array<string,mixed> $args (default: array()) Args to send to template.
-	 * @param string              $template_path (default: '') Path to look the template into.
-	 * @param string              $default_path (default: '') Default path to fallback to.
+	 * @param string $template_path (default: '') Path to look the template into.
+	 * @param string $default_path (default: '') Default path to fallback to.
+	 * @param bool $no_extract
 	 *
 	 * @return void
 	 */
-	public static function get( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+	public static function get( $template_name, $args = array(), $template_path = '', $default_path = '', $no_extract = true ) {
 
-		if ( ! empty( $args ) && is_array( $args ) ) {
+		if ( ! empty( $args ) && is_array( $args ) && $no_extract ) {
 			// phpcs:ignore WordPress.PHP.DontExtract
 			extract( $args );
 		}

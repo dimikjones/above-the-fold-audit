@@ -30,7 +30,6 @@ define( 'ABOVE_THE_FOLD_AUDIT_DB_VERSION', '1.0' );
  * Table class for creating and managing the custom analytics database table.
  */
 final class Table {
-
 	/**
 	 * The database version option key in wp_options.
 	 *
@@ -102,6 +101,15 @@ final class Table {
 		if ( version_compare( $installed_version, ABOVE_THE_FOLD_AUDIT_DB_VERSION, '<' ) ) {
 			self::install();
 		}
+	}
+
+	public static function get_data() {
+		global $wpdb;
+		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
+
+		$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY timestamp DESC LIMIT 50', $table_name ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+		return $results;
 	}
 
 	/**

@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Above_The_Fold_Audit\AdminPage as AdminPageMain;
+use Above_The_Fold_Audit\Table;
+use Above_The_Fold_Audit\Utils;
+use Above_The_Fold_Audit\Template;
 
 class AboveTheFoldPage extends AdminPageMain {
 
@@ -55,8 +58,11 @@ class AboveTheFoldPage extends AdminPageMain {
 		<div class="wrap" id="above-the-fold-audit-options">
 			<h1><?php echo esc_html( $this->get_page_title() ); ?></h1>
 			<p><?php esc_html_e( 'All Above The Fold Links on your home page for different screen sizes.', 'above-the-fold-audit' ); ?></p>
+
 			<?php
-			// TODO: template to render data!
+			$data = Table::get_data();
+
+			Template::get( 'admin-above-the-fold-data.php', $data, Utils::plugin_path() . '/templates/', '', false );
 			?>
 		</div>
 		<?php
