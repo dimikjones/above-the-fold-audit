@@ -86,6 +86,9 @@ final class Main {
 		// Database table class.
 		Table::hooks();
 
+		// Rest API for the plugin.
+		RestApi::hooks();
+
 		// Set up localisation.
 		self::load_plugin_textdomain();
 

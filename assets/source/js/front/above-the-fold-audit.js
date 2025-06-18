@@ -79,7 +79,7 @@
 				console.log( '======================================' );
 
 				// Send the collected data to the WordPress endpoint.
-				//aboveFoldAuditHomePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
+				aboveFoldAuditHomePageAnalysis.sendDataToWordPressEndpoint( dataToSend );
 			} else {
 				console.log( 'No hyperlinks found visible above the fold.' );
 			}
@@ -180,7 +180,7 @@
 			// accept POST requests at this endpoint, including handling CORS if necessary.
 			// Example using WordPress REST API: 'https://yourwebsite.com/wp-json/your-plugin/v1/analytics'
 			// Example using admin-ajax.php: 'https://yourwebsite.com/wp-admin/admin-ajax.php'.
-			const endpointUrl = 'https://yourwebsite.com/wp-json/your-plugin/v1/analytics'; // <<< MAKE SURE TO REPLACE THIS URL!
+			const endpointUrl = 'http://wpmywork.local/wp-json/above-the-fold/v1/audit';
 
 			try {
 				const response = await fetch(
@@ -196,6 +196,9 @@
 						body: JSON.stringify( data )
 					}
 				);
+
+				console.log('testing');
+				console.log(response);
 
 				if ( response.ok ) {
 					const result = await response.json();
