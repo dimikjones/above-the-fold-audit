@@ -18,15 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Above_The_Fold_Audit\Table;
 
 // Number of items to display per page.
-$per_page = 20;
+$entries_per_page = 20;
 
 // Get current page number for pagination.
-$current_page = isset( $_GET['paged'] ) ? max( 1, intval( $_GET['paged'] ) ) : 1;
-$offset       = ( $current_page - 1 ) * $per_page;
+$current_page = isset( $_GET['paged'] ) ? max( 1, intval( $_GET['paged'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification
+$offset       = ( $current_page - 1 ) * $entries_per_page;
 
 $total_entries = Table::get_total_entries();
 
-$data = Table::get_data( $per_page, $offset );
+$data = Table::get_data( $entries_per_page, $offset );
 ?>
 
 <?php if ( empty( $data ) && 1 === $current_page ) : ?>
@@ -91,7 +91,7 @@ $data = Table::get_data( $per_page, $offset );
 			$pages_args = array(
 				'base'      => add_query_arg( 'paged', '%#%' ),
 				'format'    => '',
-				'total'     => ceil( $total_entries / $per_page ),
+				'total'     => ceil( $total_entries / $entries_per_page ),
 				'current'   => $current_page,
 				'show_all'  => false,
 				'end_size'  => 1,
@@ -104,7 +104,7 @@ $data = Table::get_data( $per_page, $offset );
 				// Don't add current URL args, will be handled by 'base'.
 				'add_args'  => false,
 			);
-			echo paginate_links( $pages_args );
+			echo paginate_links( $pages_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 		</div>
 	</div>

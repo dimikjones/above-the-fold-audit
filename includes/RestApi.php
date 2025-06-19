@@ -165,11 +165,12 @@ final class RestApi {
 		$page_url        = esc_url_raw( $data['pageUrl'] );
 		$viewport_width  = isset( $data['viewportSize']['width'] ) ? intval( $data['viewportSize']['width'] ) : 0;
 		$viewport_height = isset( $data['viewportSize']['height'] ) ? intval( $data['viewportSize']['height'] ) : 0;
-		$visible_links   = isset( $data['visibleLinks'] ) ? wp_json_encode( $data['visibleLinks'] ) : '[]'; // Store as JSON string.
+		// Store as JSON string.
+		$visible_links   = isset( $data['visibleLinks'] ) ? wp_json_encode( $data['visibleLinks'] ) : '[]';
 
 		// Get user IP address using helper method.
 		$user_ip    = self::get_client_ip();
-		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
+		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 
 		// Prepare data for insertion.
 		$insert_data = array(
@@ -184,21 +185,17 @@ final class RestApi {
 
 		// Define data formats for wpdb->insert (important for security and correct data types).
 		$insert_format = array(
-			'%s', // timestamp (string)
-			'%s', // page_url (string)
-			'%d', // viewport_width (integer)
-			'%d', // viewport_height (integer)
-			'%s', // visible_links (string - JSON)
-			'%s', // user_ip (string)
-			'%s', // user_agent (string)
+			'%s', // timestamp (string).
+			'%s', // page_url (string).
+			'%d', // viewport_width (integer).
+			'%d', // viewport_height (integer).
+			'%s', // visible_links (string - JSON).
+			'%s', // user_ip (string).
+			'%s', // user_agent (string).
 		);
 
 		// Insert data into the custom table.
-		$inserted = $wpdb->insert(
-			$table_name,
-			$insert_data,
-			$insert_format
-		);
+		$inserted = $wpdb->insert( $table_name, $insert_data, $insert_format ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		if ( false === $inserted ) {
 			// Log the last error for debugging purposes (check WordPress debug.log).

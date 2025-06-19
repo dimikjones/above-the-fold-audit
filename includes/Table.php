@@ -180,7 +180,7 @@ final class Table {
 	public static function clear_old_data() {
 		global $wpdb;
 		$table_name     = ABOVE_THE_FOLD_AUDIT_TABLE;
-		$seven_days_ago = date( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
+		$seven_days_ago = gmdate( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
 
 		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE timestamp < %s", $table_name, $seven_days_ago ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
