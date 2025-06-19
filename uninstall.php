@@ -12,4 +12,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// PERFORM UNINSTALL ACTIONS HERE.
+use Above_The_Fold_Audit\Table;
+
+Table::uninstall();
