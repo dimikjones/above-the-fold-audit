@@ -152,8 +152,8 @@ final class Table {
 	public static function uninstall() {
 		global $wpdb;
 		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
-		$sql        = "DROP TABLE IF EXISTS {$table_name};";
-		$wpdb->query( $sql );
+
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		// Also delete the database version option.
 		delete_option( self::DB_VERSION_OPTION_KEY );
@@ -179,16 +179,10 @@ final class Table {
 	 */
 	public static function clear_old_data() {
 		global $wpdb;
-		$table_name = ABOVE_THE_FOLD_AUDIT_TABLE;
+		$table_name     = ABOVE_THE_FOLD_AUDIT_TABLE;
 		$seven_days_ago = date( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
 
-		$deleted = $wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM %i WHERE timestamp < %s",
-				$table_name,
-				$seven_days_ago
-			)
-		);
+		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE timestamp < %s", $table_name, $seven_days_ago ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 		if ( false === $deleted ) {
 			error_log( 'Above The Fold Audit: Failed to clear old data. Error: ' . $wpdb->last_error );
